@@ -10,18 +10,39 @@ header {
 .search-bar{
     display: flex;
     gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
 }
 .movie-card{
     background-color: #243B55;
     color:aliceblue;
     border-radius: 10px;
     padding: 10px;
+    width: 220px;
       
 }
 .movie-grid{
    display: grid; 
-   grid-template-columns: 1fr 1fr 1fr 1fr;  
+   grid-template-columns: repeat(auto-fit, minmax(180px, 220px));
+   gap: 20px;  
+   justify-content: center;
 }
 .movie-poster{
     width:100%;
+    border-radius: 10px;
+    height: 330px;
+    object-fit: cover;
+}
+button {
+  background-color: #243b55;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+button:hover {
+  background-color: #34577a;
 }

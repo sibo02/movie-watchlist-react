@@ -1,16 +1,23 @@
-function MovieCard(props) {
-    return (
-        <div className="movie-card">
-          <h3>{props.show.name}</h3>
-          <img
-            className="movie-poster"
-             src={`https://image.tmdb.org/t/p/w500${props.show.poster_path}`}
-             alt={props.show.name}
-           />
-          
-          <p>{props.show.first_air_date}</p>
-        </div>
-    );
+function MovieCard({ show, addToWatchlist }) {
+  return (
+    <div className="movie-card">
+      <img
+        className="movie-poster"
+        src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}
+        alt={show.name}
+      />
 
+      <h3>{show.name}</h3>
+      <p>{show.first_air_date}</p>
+
+      <button onClick={() => {
+  console.log("Clicked!", show.name);
+  addToWatchlist(show);
+}}>
+  + Add to Watchlist
+</button>
+    </div>
+  );
 }
+
 export default MovieCard;
