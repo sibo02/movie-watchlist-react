@@ -46,3 +46,68 @@ button {
 button:hover {
   background-color: #34577a;
 }
+
+.rating-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.rating {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  background: #1b2b42;
+  font-size: 14px;
+}
+
+.rating.active {
+  background: #f59e0b;
+  color: #141E30;
+  font-weight: bold;
+}
+.rating-text {
+  margin: 12px 0 8px;
+  font-weight: 600;
+}
+.status-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.status {
+  background: #1b2b42;
+  color: white;
+  border: 1px solid #34577a;
+  border-radius: 20px;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.status.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+button:disabled {
+  background: #16a34a;
+  cursor: default;
+}
+.remove-btn {
+  width: 100%;
+  margin-top: 14px;
+  background:#000046;
+}
+
+.remove-btn:hover {
+  background: #1D2671;
+}
+.empty-watchlist {
+  text-align: center;
+  color: #cbd5e1;
+  margin-top: 50px;
+  font-size: 18px;
+}

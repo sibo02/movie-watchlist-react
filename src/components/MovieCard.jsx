@@ -1,4 +1,4 @@
-function MovieCard({ show, addToWatchlist }) {
+function MovieCard({ show, addToWatchlist, isAdded}) {
   return (
     <div className="movie-card">
       <img
@@ -10,12 +10,12 @@ function MovieCard({ show, addToWatchlist }) {
       <h3>{show.name}</h3>
       <p>{show.first_air_date}</p>
 
-      <button onClick={() => {
-  console.log("Clicked!", show.name);
-  addToWatchlist(show);
-}}>
-  + Add to Watchlist
-</button>
+      <button
+       onClick={() => addToWatchlist(show)}
+       disabled={isAdded}
+      >
+       {isAdded ? "✓ Added" : "+ Add to Watchlist"}
+      </button>
     </div>
   );
 }
