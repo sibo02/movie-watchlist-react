@@ -111,3 +111,65 @@ button:disabled {
   margin-top: 50px;
   font-size: 18px;
 }
+.watchlist-search {
+  width: 100%;
+  max-width: 500px;
+  display: block;
+  margin: 20px auto;
+  padding: 12px 16px;
+  background: #1b2b42;
+  color: white;
+  border: 1px solid #34577a;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.watchlist-search::placeholder {
+  color: #94a3b8;
+}
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 15px 0 25px;
+}
+
+.filter {
+  background: #1b2b42;
+  border: 1px solid #34577a;
+  color: white;
+  border-radius: 20px;
+  padding: 8px 14px;
+}
+
+.active-filter {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+.watchlist-stats {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.stat {
+  background: #243b55;
+  border-radius: 12px;
+  padding: 15px 25px;
+  min-width: 100px;
+  text-align: center;
+}
+
+.stat strong {
+  display: block;
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.stat span {
+  font-size: 14px;
+  color: #cbd5e1;
+}

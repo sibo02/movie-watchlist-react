@@ -8,6 +8,8 @@ function App() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [showWatchlist, setShowWatchlist] = useState(false);
+  const [watchlistSearch, setWatchlistSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [watchlist, setWatchlist] = useState(() => {
     return JSON.parse(localStorage.getItem("watchlist")) || [];
   });
@@ -110,6 +112,29 @@ function App() {
       )
     );
   }
+  const filteredWatchlist = watchlist.filter((item) => {
+  const matchesSearch = item.title
+    .toLowerCase()
+    .includes(watchlistSearch.toLowerCase());
+
+  const matchesStatus =
+    statusFilter === "all" || item.status === statusFilter;
+
+  return matchesSearch && matchesStatus;
+});
+const totalCount = watchlist.length;
+
+const planCount = watchlist.filter(
+  (item) => item.status === "plan"
+).length;
+
+const watchingCount = watchlist.filter(
+  (item) => item.status === "watching"
+).length;
+
+const completedCount = watchlist.filter(
+  (item) => item.status === "completed"
+).length;
 
   return (
     <div>
@@ -133,6 +158,63 @@ function App() {
             </button>
 
             <h2>📺 My Watchlist</h2>
+            <div className="watchlist-stats">
+            <div className="stat">
+              <strong>{totalCount}</strong>
+               <span>📚 Total</span>
+            </div>
+
+         <div className="stat">
+           <strong>{planCount}</strong>
+            <span>📌 Plan</span>
+         </div>
+
+         <div className="stat">
+          <strong>{watchingCount}</strong>
+          <span>▶️ Watching</span>
+        </div>
+
+        <div className="stat">
+         <strong>{completedCount}</strong>
+           <span>✅ Completed</span>
+        </div>
+        </div>
+            <input
+              type="text"
+              placeholder="Search your watchlist..."
+              value={watchlistSearch}
+              onChange={(e) => setWatchlistSearch(e.target.value)}
+              className="watchlist-search"
+            />
+            <div className="filter-buttons">
+             <button
+               className={statusFilter === "all" ? "filter active-filter" : "filter"}
+               onClick={() => setStatusFilter("all")}
+              >
+                All
+             </button>
+
+             <button
+               className={statusFilter === "plan" ? "filter active-filter" : "filter"}
+               onClick={() => setStatusFilter("plan")}
+              >
+                📌 Plan
+              </button>
+
+             <button
+                className={statusFilter === "watching" ? "filter active-filter" : "filter"}
+                onClick={() => setStatusFilter("watching")}
+               >
+                  ▶️ Watching
+             </button>
+
+              <button
+                 className={statusFilter === "completed" ? "filter active-filter" : "filter"}
+                 onClick={() => setStatusFilter("completed")}
+              >
+                ✅ Completed
+             </button>
+           </div>
 
             {watchlist.length === 0 ? (
               <p className="empty-watchlist">
@@ -140,7 +222,7 @@ function App() {
               </p>
             ) : (
               <div className="movie-grid">
-                {watchlist.map((item) => (
+                {filteredWatchlist.map((item) => (
                   <div className="movie-card" key={item.id}>
                     <img
                       className="movie-poster"
