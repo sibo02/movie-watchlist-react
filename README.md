@@ -1,16 +1,92 @@
-# React + Vite
+# 🎬 Drama & Movie Watchlist
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React web app for discovering TV shows and keeping track of dramas and movies you want to watch.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+* 🔥 Browse trending TV shows
+* 🔎 Search for TV shows using the TMDB API
+* 📺 Add shows to your personal watchlist
+* 📌 Set a watch status:
 
-## React Compiler
+  * Plan to Watch
+  * Watching
+  * Completed
+* ⭐ Rate completed shows from 1–10
+* 🔍 Search within your watchlist
+* 🗂️ Filter your watchlist by status
+* 📊 View watchlist statistics and average rating
+* 💾 Save watchlist data using Local Storage
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Built With
 
-## Expanding the ESLint configuration
+* React
+* JavaScript
+* CSS
+* Vite
+* TMDB API
+* Local Storage
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🎯 What I Learned
+
+This project helped me practice building a React application from scratch. I worked with:
+
+* React components
+* `useState`
+* `useEffect`
+* Props
+* API requests with `fetch()`
+* Environment variables
+* Conditional rendering
+* Array methods such as `map()`, `filter()`, and `some()`
+* Local Storage
+* Responsive CSS
+* Managing and updating application state
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone YOUR_REPOSITORY_URL
+```
+
+### 2. Go into the project folder
+
+```bash
+cd movie-watchlist-react
+```
+
+### 3. Install dependencies
+
+```bash
+npm install
+```
+
+### 4. Add your TMDB access token
+
+Create a `.env` file in the project root:
+
+```env
+VITE_TMDB_ACCESS_TOKEN=your_token_here
+```
+
+### 5. Start the development server
+
+```bash
+npm run dev
+```
+
+Then open the local URL shown in your terminal.
+
+## 📌 Future Improvements
+
+* Add separate categories for K-dramas, C-dramas, J-dramas, and other types of shows
+* Add more detailed show information
+* Add pagination for search results
+* Add sorting options
+* Add user authentication and cloud-based watchlists
+
+## 🙌 Acknowledgements
+
+Movie and TV show data is provided by the TMDB API.

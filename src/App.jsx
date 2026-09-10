@@ -17,6 +17,7 @@ function App() {
   });
 
   const accessToken = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
+  
 
   async function fetchTrending() {
     const url = "https://api.themoviedb.org/3/trending/tv/day";
