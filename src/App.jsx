@@ -10,6 +10,8 @@ function App() {
   const [showWatchlist, setShowWatchlist] = useState(false);
   const [watchlistSearch, setWatchlistSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [editingRating, setEditingRating] = useState({});
+
   const [watchlist, setWatchlist] = useState(() => {
     return JSON.parse(localStorage.getItem("watchlist")) || [];
   });
@@ -38,9 +40,7 @@ function App() {
 
     setQuery(search);
 
-    const url = `https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(
-      search
-    )}`;
+    const url = `https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(search)}`;
 
     const response = await fetch(url, {
       headers: {
@@ -112,29 +112,43 @@ function App() {
       )
     );
   }
+
   const filteredWatchlist = watchlist.filter((item) => {
-  const matchesSearch = item.title
-    .toLowerCase()
-    .includes(watchlistSearch.toLowerCase());
+    const matchesSearch = item.title
+      .toLowerCase()
+      .includes(watchlistSearch.toLowerCase());
 
-  const matchesStatus =
-    statusFilter === "all" || item.status === statusFilter;
+    const matchesStatus =
+      statusFilter === "all" || item.status === statusFilter;
 
-  return matchesSearch && matchesStatus;
-});
-const totalCount = watchlist.length;
+    return matchesSearch && matchesStatus;
+  });
 
-const planCount = watchlist.filter(
-  (item) => item.status === "plan"
-).length;
+  const totalCount = watchlist.length;
 
-const watchingCount = watchlist.filter(
-  (item) => item.status === "watching"
-).length;
+  const planCount = watchlist.filter(
+    (item) => item.status === "plan"
+  ).length;
 
-const completedCount = watchlist.filter(
-  (item) => item.status === "completed"
-).length;
+  const watchingCount = watchlist.filter(
+    (item) => item.status === "watching"
+  ).length;
+
+  const completedCount = watchlist.filter(
+    (item) => item.status === "completed"
+  ).length;
+
+  const ratedItems = watchlist.filter(
+    (item) => item.rating !== null
+  );
+
+  const averageRating =
+    ratedItems.length > 0
+      ? (
+          ratedItems.reduce((sum, item) => sum + item.rating, 0) /
+          ratedItems.length
+        ).toFixed(1)
+      : "—";
 
   return (
     <div>
@@ -142,43 +156,56 @@ const completedCount = watchlist.filter(
         <div className="header-top">
           <h1>Drama & Movie Watchlist</h1>
 
-          <button onClick={() => setShowWatchlist(true)}>
-            📺 My Watchlist
-          </button>
+          {!showWatchlist && (
+            <button onClick={() => setShowWatchlist(true)}>
+              📺 My Watchlist
+            </button>
+          )}
         </div>
-
-        <p>Find something to watch 🍿</p>
       </header>
 
       <main>
         {showWatchlist ? (
           <>
-            <button onClick={() => setShowWatchlist(false)}>
-              🏠 Back to Home
-            </button>
+            <div className="watchlist-header">
+              <button
+                className="back-btn"
+                onClick={() => setShowWatchlist(false)}
+              >
+                ← Back
+              </button>
 
-            <h2>📺 My Watchlist</h2>
-            <div className="watchlist-stats">
-            <div className="stat">
-              <strong>{totalCount}</strong>
-               <span>📚 Total</span>
+              <h2>📺 My Watchlist</h2>
+              <p>{totalCount} titles • Avg {averageRating}</p>
             </div>
 
-         <div className="stat">
-           <strong>{planCount}</strong>
-            <span>📌 Plan</span>
-         </div>
+            <div className="watchlist-stats">
+              <div className="stat">
+                <strong>{totalCount}</strong>
+                <span>📚 Total</span>
+              </div>
 
-         <div className="stat">
-          <strong>{watchingCount}</strong>
-          <span>▶️ Watching</span>
-        </div>
+              <div className="stat">
+                <strong>{averageRating}</strong>
+                <span>⭐ Avg Rating</span>
+              </div>
 
-        <div className="stat">
-         <strong>{completedCount}</strong>
-           <span>✅ Completed</span>
-        </div>
-        </div>
+              <div className="stat">
+                <strong>{planCount}</strong>
+                <span>📌 Plan</span>
+              </div>
+
+              <div className="stat">
+                <strong>{watchingCount}</strong>
+                <span>▶️ Watching</span>
+              </div>
+
+              <div className="stat">
+                <strong>{completedCount}</strong>
+                <span>✅ Completed</span>
+              </div>
+            </div>
+
             <input
               type="text"
               placeholder="Search your watchlist..."
@@ -186,35 +213,36 @@ const completedCount = watchlist.filter(
               onChange={(e) => setWatchlistSearch(e.target.value)}
               className="watchlist-search"
             />
+
             <div className="filter-buttons">
-             <button
-               className={statusFilter === "all" ? "filter active-filter" : "filter"}
-               onClick={() => setStatusFilter("all")}
+              <button
+                className={statusFilter === "all" ? "filter active-filter" : "filter"}
+                onClick={() => setStatusFilter("all")}
               >
                 All
-             </button>
+              </button>
 
-             <button
-               className={statusFilter === "plan" ? "filter active-filter" : "filter"}
-               onClick={() => setStatusFilter("plan")}
+              <button
+                className={statusFilter === "plan" ? "filter active-filter" : "filter"}
+                onClick={() => setStatusFilter("plan")}
               >
                 📌 Plan
               </button>
 
-             <button
+              <button
                 className={statusFilter === "watching" ? "filter active-filter" : "filter"}
                 onClick={() => setStatusFilter("watching")}
-               >
-                  ▶️ Watching
-             </button>
+              >
+                ▶️ Watching
+              </button>
 
               <button
-                 className={statusFilter === "completed" ? "filter active-filter" : "filter"}
-                 onClick={() => setStatusFilter("completed")}
+                className={statusFilter === "completed" ? "filter active-filter" : "filter"}
+                onClick={() => setStatusFilter("completed")}
               >
                 ✅ Completed
-             </button>
-           </div>
+              </button>
+            </div>
 
             {watchlist.length === 0 ? (
               <p className="empty-watchlist">
@@ -224,60 +252,74 @@ const completedCount = watchlist.filter(
               <div className="movie-grid">
                 {filteredWatchlist.map((item) => (
                   <div className="movie-card" key={item.id}>
-                    <img
-                      className="movie-poster"
-                      src={`https://image.tmdb.org/t/p/w500${item.poster}`}
-                      alt={item.title}
-                    />
+                    <div className="poster-wrapper">
+                      <img
+                        className="movie-poster"
+                        src={`https://image.tmdb.org/t/p/w500${item.poster}`}
+                        alt={item.title}
+                      />
 
-                    <h3>{item.title}</h3>
-                    <p>{item.year}</p>
-
-                    <div className="status-section">
                       <select
+                        className="status-badge"
                         value={item.status}
-                        onChange={(e) =>
-                          updateStatus(item.id, e.target.value)
-                        }
+                        onChange={(e) => updateStatus(item.id, e.target.value)}
                       >
-                        <option value="plan">📌 Plan to Watch</option>
+                        <option value="plan">📌 Plan</option>
                         <option value="watching">▶️ Watching</option>
                         <option value="completed">✅ Completed</option>
                       </select>
                     </div>
 
+                    <h3>{item.title}</h3>
+                    <p>{item.year}</p>
+
                     {item.status === "completed" && (
                       <>
-                        <p className="rating-text">
-                          ⭐ Rate:{" "}
-                          {item.rating ? `${item.rating}/10` : "Not rated"}
-                        </p>
+                       {editingRating[item.id] || item.rating === null ? (
+                         <>
+                          <p className="rating-text">⭐ Rate this</p>
 
-                        <div className="rating-buttons">
-                          {[1,2,3,4,5,6,7,8,9,10].map((num) => (
-                            <button
-                              key={num}
-                              className={
-                                item.rating === num
-                                  ? "rating active"
-                                  : "rating"
+                             <div className="rating-buttons">
+                                {[1,2,3,4,5,6,7,8,9,10].map((num) => (
+                                   <button
+                                      key={num}
+                                      className={item.rating === num ? "rating active" : "rating"}
+                                      onClick={() => {
+                                      setRating(item.id, num);
+                                      setEditingRating({
+                                       ...editingRating,
+                                       [item.id]: false,
+                                    });
+                                        }}
+                                     >
+                                         {num}
+                                     </button>
+                                 ))}
+                                </div>
+                          </>
+                         ) : (
+                        <>
+                         <p className="rating-text">⭐ {item.rating}/10</p>
+
+                           <button
+                            className="change-rating"
+                            onClick={() =>
+                             setEditingRating({
+                              ...editingRating,
+                              [item.id]: true,
+                           })
                               }
-                              onClick={() =>
-                                setRating(item.id, num)
-                              }
-                            >
-                              {num}
-                            </button>
-                          ))}
-                        </div>
-                      </>
-                    )}
+                          >
+                           Change Rating
+                         </button>
+                       </>
+                        )}
+                   </>
+                  )}
 
                     <button
                       className="remove-btn"
-                      onClick={() =>
-                        removeFromWatchlist(item.id)
-                      }
+                      onClick={() => removeFromWatchlist(item.id)}
                     >
                       🗑 Remove from Watchlist
                     </button>
@@ -294,11 +336,7 @@ const completedCount = watchlist.filter(
               handleSearch={handleSearch}
             />
 
-            <h2>
-              {query
-                ? `Search Results: ${query}`
-                : "🔥 Trending Now"}
-            </h2>
+            <h2>{query ? `Search Results: ${query}` : "🔥 Trending Now"}</h2>
 
             <div className="movie-grid">
               {results.map((show) => (
