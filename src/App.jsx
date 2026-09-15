@@ -11,13 +11,23 @@ function App() {
   const [watchlistSearch, setWatchlistSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [editingRating, setEditingRating] = useState({});
+  const [toast, setToast] = useState("");
 
   const [watchlist, setWatchlist] = useState(() => {
     return JSON.parse(localStorage.getItem("watchlist")) || [];
   });
 
   const accessToken = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
-  
+  const genreMap = {
+  16: "Animation",
+  18: "Drama",
+  35: "Comedy",
+  80: "Crime",
+  9648: "Mystery",
+  10749: "Romance",
+  10759: "Action",
+  10765: "Sci-Fi",
+};
 
   async function fetchTrending() {
     const url = "https://api.themoviedb.org/3/trending/tv/day";
@@ -84,12 +94,16 @@ function App() {
       title: show.name,
       poster: show.poster_path,
       year: show.first_air_date?.slice(0, 4) || "Unknown",
+      genres: show.genre_ids?.map(id => genreMap[id]).filter(Boolean) || [],
       seen: false,
       rating: null,
       status: "plan",
     };
 
     setWatchlist([...watchlist, newItem]);
+    setToast(`✓ ${show.name} added to your Watchlist`);
+
+    setTimeout(() => setToast(""), 2000);
   }
 
   function removeFromWatchlist(id) {
@@ -272,7 +286,18 @@ function App() {
                     </div>
 
                     <h3>{item.title}</h3>
+                    {item.genres?.length > 0 && (
+                     <div className="genre-list">
+                       {item.genres.map((genre) => (
+                          <span className="genre-tag" key={genre}>
+                           {genre}
+                         </span>
+                       ))}
+                     </div>
+                    )}
                     <p>{item.year}</p>
+
+    
 
                     {item.status === "completed" && (
                       <>
@@ -339,21 +364,30 @@ function App() {
 
             <h2>{query ? `Search Results: ${query}` : "🔥 Trending Now"}</h2>
 
-            <div className="movie-grid">
-              {results.map((show) => (
-                <MovieCard
-                  key={show.id}
-                  show={show}
-                  addToWatchlist={addToWatchlist}
-                  isAdded={watchlist.some(
-                    (item) => item.id === show.id
-                  )}
-                />
-              ))}
-            </div>
+           {results.length === 0 && query ? (
+            <p className="no-results">
+                🔍 No results found for "{query}"
+             </p>
+          ) : (
+                <div className="movie-grid">
+                 {results.map((show) => (
+                  <MovieCard
+                    key={show.id}
+                    show={show}
+                    addToWatchlist={addToWatchlist}
+                     isAdded={watchlist.some((item) => item.id === show.id)}
+                  />
+                 ))}
+               </div>
+             )}
           </>
         )}
       </main>
+      {toast && (
+         <div className="toast">
+             {toast}
+           </div>
+)}
     </div>
   );
 }

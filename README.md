@@ -27,21 +27,6 @@ A React web app for discovering TV shows and keeping track of dramas and movies 
 * TMDB API
 * Local Storage
 
-## 🎯 What I Learned
-
-This project helped me practice building a React application from scratch. I worked with:
-
-* React components
-* `useState`
-* `useEffect`
-* Props
-* API requests with `fetch()`
-* Environment variables
-* Conditional rendering
-* Array methods such as `map()`, `filter()`, and `some()`
-* Local Storage
-* Responsive CSS
-* Managing and updating application state
 
 ## 🚀 Getting Started
 
